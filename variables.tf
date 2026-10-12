@@ -13,7 +13,7 @@ variable "student_name" {
 variable "page_message" {
   description = "Message displayed on the website"
   type        = string
-  default = "Cloud Services Week 7 - Updated using OpenTofu"
+  default     = "Cloud Services Week 7 - Updated using OpenTofu"
 }
 
 variable "project_network" {

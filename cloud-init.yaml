@@ -1,24 +1,53 @@
+
 #cloud-config
 package_update: true
 
 packages:
   - apache2
+  - git
 
 write_files:
   - path: /var/www/html/index.html
     permissions: '0644'
     content: |
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
       <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Cloud Services Week 7</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 60px 20px;
+            background: #f4f7fb;
+            color: #17233b;
+          }
+          a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 25px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+          }
+        </style>
       </head>
-      <body style="font-family:Arial;text-align:center;padding:60px">
+      <body>
         <h1>${student_name}</h1>
         <h2>${page_message}</h2>
         <p>Deployed automatically using OpenTofu and cloud-init.</p>
+        <a href="/documentation/">View Complete Week 7 Documentation</a>
       </body>
       </html>
 
 runcmd:
   - systemctl enable --now apache2
+  - git clone --depth 1 --branch main https://github.com/jagrithanda2011-tech/cloudservices-week7.git /tmp/week7-docs
+  - mkdir -p /var/www/html/documentation
+  - cp /tmp/week7-docs/index.html /var/www/html/documentation/index.html
+  - cp -r /tmp/week7-docs/media /var/www/html/documentation/media
+  - chmod -R a+rX /var/www/html/documentation
+  - systemctl restart apache2
